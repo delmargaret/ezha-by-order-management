@@ -19,6 +19,11 @@
 
 .app-form label {
   font-weight: bold;
+  font-size: 20px;
+}
+
+.form-row {
+  font-size: 20px !important;
 }
 
 #main-row {
@@ -32,6 +37,7 @@
   background-color: rgba(235, 95, 95, 0.6);
   border-color: rgba(235, 95, 95, 0.6);
   width: 100%;
+  font-size: 20px;
 }
 
 .btn-red:hover {
