@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUri: 'https://localhost:44327/'
+  apiBaseUri: 'https://ezha-by-app.herokuapp.com/',
 };
 
 /*
