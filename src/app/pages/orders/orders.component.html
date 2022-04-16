@@ -1,0 +1,16 @@
+<div class="orders">
+  <div class="row" id="main-row">
+    <div class="col">
+      <img alt="" src="../../../assets/leaves.png" class="leaves-left" />
+    </div>
+    <div class="col-8">
+      <app-courier-page *ngIf="isCourier; else cafePage"></app-courier-page>
+      <ng-template #cafePage>
+        <app-cafe-page></app-cafe-page>
+      </ng-template>
+    </div>
+    <div class="col">
+      <img alt="" src="../../../assets/leaves.png" class="leaves-right" />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,155 @@
+<div class="courier">
+  <br />
+  <div class="courier-status" *ngIf="courierStatus !== null">
+    <h5><b>Статус:</b></h5>
+    <div>
+      <select
+        class="form-control"
+        id="courier-status"
+        [ngModel]="courierStatus"
+        #status
+        (change)="onChangeCourierStatus(status.value)"
+        (click)="$event.stopPropagation()"
+        [ngStyle]="
+          selected ? dropdownStyles[selected] : dropdownStyles[courierStatus]
+        "
+      >
+        <option [value]="statuses.Active" class="green">Активный</option>
+        <option [value]="statuses.Busy" class="orange">Занят</option>
+        <option [value]="statuses.Away" class="blue">Нет на месте</option>
+      </select>
+    </div>
+  </div>
+  <br />
+  <h4>Заказы</h4>
+  <div class="button-group">
+    <mat-button-toggle-group
+      name="orders"
+      aria-label="orders"
+      [value]="selectedFilter"
+    >
+      <mat-button-toggle
+        class="btn-red"
+        (click)="getActive($event)"
+        [value]="orderFilters[0]"
+        >Активные</mat-button-toggle
+      >
+      <mat-button-toggle
+        class="btn-red"
+        (click)="getClosed($event)"
+        [value]="orderFilters[1]"
+        >Завершенные</mat-button-toggle
+      >
+      <mat-button-toggle
+        class="btn-red"
+        (click)="getAll($event)"
+        [value]="orderFilters[2]"
+        >Все</mat-button-toggle
+      >
+    </mat-button-toggle-group>
+  </div>
+  <br />
+  <div *ngIf="orders.length > 0; else ordersNotFound">
+    <mat-accordion class="orders" *ngFor="let order of orders">
+      <mat-expansion-panel
+        hideToggle
+        (opened)="openPanel(order.id)"
+        (closed)="closePanel(order.id)"
+        [expanded]="openedOrders.includes(order.id)"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ order.name + " " + order.surname }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ order.phone }}
+            <div class="orderDate">
+              {{ order.orderDateTime | date: "d/M/yy, H:mm" }}
+            </div>
+            <div class="status" *ngIf="order.isOrderAccepted; else notAccepted">
+              <div
+                class="form-group"
+                *ngIf="order.orderStatus !== 3; else closedStatus"
+              >
+                <button
+                  type="button"
+                  class="btn btn-red"
+                  (click)="onChangeStatus($event, order.id)"
+                >
+                  Завершить заказ
+                </button>
+              </div>
+              <ng-template #closedStatus>
+                <div class="closed-order">Завершен</div>
+              </ng-template>
+            </div>
+            <ng-template #notAccepted>
+              <div role="group" class="btn-group">
+                <button
+                  matTooltip="Принять"
+                  matTooltipPosition="above"
+                  type="button"
+                  class="accept btn btn-outline-success"
+                  (click)="acceptOrder($event, order.id)"
+                >
+                  <mat-icon>done</mat-icon>
+                </button>
+                <button
+                  matTooltip="Отклонить"
+                  matTooltipPosition="above"
+                  type="button"
+                  class="reject btn btn-outline-danger"
+                  (click)="rejectOrder($event, order.id)"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </ng-template>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="order-info">
+          <div>
+            <b>Адрес:</b> г. {{ towns[order.town] }}, ул. {{ order.street }}, д.
+            {{ order.houseNumber
+            }}{{ order.flatNumber ? ", " + order.flatNumber : null }}
+          </div>
+          <div><b>Способ оплаты:</b> {{ paymentTypes[order.paymentType] }}</div>
+          <div *ngIf="order.comment">
+            <b>Комментарий:</b> {{ order.comment }}
+          </div>
+          <div>
+            <b>Заказ:</b>
+            <div
+              class="cafe-order"
+              *ngFor="let cafeOrder of order.courierDishes"
+            >
+              <div>
+                <b>{{ cafeOrder.cafeName }}</b>
+              </div>
+              <div class="dish" *ngFor="let dish of cafeOrder.dishes">
+                <div
+                  class="dish-icon"
+                  *ngIf="dish.dishIconUrl; else emptyImg"
+                  [ngStyle]="{
+                    'background-image': 'url(' + dish.dishIconUrl + ')'
+                  }"
+                ></div>
+                <ng-template #emptyImg>
+                  <div class="empty-image"></div>
+                </ng-template>
+                <div>{{ dish.dishName }}</div>
+                <div class="number-of-dishes">
+                  {{ dish.numberOfDishes }} шт.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="total-price"><b>Итого:</b> {{ order.totalPrice }}</div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <ng-template #ordersNotFound>
+    <div class="not-found">Заказы не найдены</div>
+  </ng-template>
+</div>
