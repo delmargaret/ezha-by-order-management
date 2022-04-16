@@ -3,9 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: {
-    apiBaseUri: 'https://ezha-by-app.herokuapp.com/',
-  },
+  production: false,
   apiBaseUri: 'https://ezha-by-app.herokuapp.com/',
 };
 
