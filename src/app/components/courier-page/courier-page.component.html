@@ -58,23 +58,32 @@
         [expanded]="openedOrders.includes(order.id)"
       >
         <mat-expansion-panel-header>
-          <mat-panel-title>
+          <mat-panel-title style="width: 200px">
             {{ order.name + " " + order.surname }}
           </mat-panel-title>
           <mat-panel-description>
-            {{ order.phone }}
-            <div class="orderDate">
+            <div style="width: 200px">
+              {{ order.phone }}
+            </div>
+
+            <div class="orderDate" style="width: 150px">
               {{ order.orderDateTime | date: "d/M/yy, H:mm" }}
             </div>
-            <div class="status" *ngIf="order.isOrderAccepted; else notAccepted">
+            <div
+              class="status"
+              *ngIf="order.isOrderAccepted; else notAccepted"
+              style="width: 160px"
+            >
               <div
                 class="form-group"
                 *ngIf="order.orderStatus !== 3; else closedStatus"
+                style="margin-right: 0; width: auto"
               >
                 <button
                   type="button"
                   class="btn btn-red"
                   (click)="onChangeStatus($event, order.id)"
+                  style="width: 160px"
                 >
                   Завершить заказ
                 </button>
@@ -84,7 +93,7 @@
               </ng-template>
             </div>
             <ng-template #notAccepted>
-              <div role="group" class="btn-group">
+              <div role="group" class="btn-group" style="width: 160px">
                 <button
                   matTooltip="Принять"
                   matTooltipPosition="above"

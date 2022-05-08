@@ -28,7 +28,6 @@ export class CafePageComponent implements OnInit {
     2: 'all',
   };
   selectedFilter: string = this.orderFilters[0];
-  selected: string | null = null;
   isCourierButtonAvailable = true;
   openedOrders: string[] = [];
 
@@ -88,9 +87,9 @@ export class CafePageComponent implements OnInit {
     );
   }
 
-  onChangeStatus(value: string, orderId: string) {
-    this.selected = value;
-    this.ordersService.SetOrderStatus(orderId, Number(value)).subscribe(
+  onChangeStatus(value: string, order: Order) {
+    order.orderStatus = Number(value);
+    this.ordersService.SetOrderStatus(order.id, Number(value)).subscribe(
       () => this.getOrders(),
       () => {}
     );
